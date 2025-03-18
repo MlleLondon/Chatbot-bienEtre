@@ -13,5 +13,3 @@ Ce projet crée un chatbot de bien-être en Python utilisant NLTK et Flask pour 
 
 - Réponses personnalisées selon l'humeur (stress, tristesse, bonheur, etc.).
 - Interface web pour interagir avec le chatbot.
-# Chatbot-bienEtre
-# Chatbot-bienEtre
