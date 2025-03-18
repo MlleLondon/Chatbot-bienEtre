@@ -1,0 +1,282 @@
+/* Style Global */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f1f1;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    color: #1e90ff;
+}
+
+p {
+    font-size: 18px;
+}
+
+.container {
+    margin: 0;
+    padding: 0;
+}
+
+/* Page d'Accueil */
+.welcome-container {
+    background-color: white;
+    text-align: center;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 50px auto;
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+.subheading {
+    color: #1e90ff;
+    font-size: 20px;
+}
+
+.quote {
+    font-style: italic;
+    font-size: 22px;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.help-buttons button {
+    padding: 15px 25px;
+    font-size: 18px;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.help-buttons button:hover {
+    background-color: #0073e6;
+}
+
+/* Page de Chat */
+#chat-container {
+    width: 50%;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#chat-box {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #fafafa;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.message {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.message p {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.message.user-message p {
+    background-color: #d1ecf1;
+    margin-left: auto;
+}
+
+.message.bot-message p {
+    background-color: #e9ecef;
+}
+
+.message .icon {
+    margin-right: 10px;
+}
+
+.message.user-message .icon {
+    color: #1e90ff;
+}
+
+.message.bot-message .icon {
+    color: #007bff;
+}
+
+.message-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.message-input input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.send-button {
+    padding: 10px 20px;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background-color: #0073e6;
+}
+/* 🟢 Styles de la section IA (Cartes qui défilent) */
+.ia-responses {
+    text-align: center;
+    padding: 30px;
+    background-color: #f8f9fa;
+}
+
+.carousel {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.card {
+    background: #ffffff;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 250px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* 🟢 Styles de la section des images de bien-être */
+.wellness-images {
+    text-align: center;
+    padding: 30px;
+}
+
+.image-gallery {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.image-gallery img {
+    width: 200px;
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.image-gallery img:hover {
+    transform: scale(1.1);
+}
+/* Empêcher le scroll quand le modal est ouvert */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* 🟢 Styles du modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 🟢 Contenu du modal */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    max-width: 600px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 🟢 Animation d'apparition */
+@keyframes fadeIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* 🟢 Bouton de fermeture */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: black;
+}
+
+/* 🟢 Zone du chat */
+#chat-box {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+/* 🟢 Champ de message */
+.message-input {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+#user-message {
+    width: 70%;
+    padding: 8px;
+}
+
+/* 🟢 Bouton envoyer */
+.send-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background-color: #45a049;
+}
+
+/* 🟢 Responsive pour mobile */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+    }
+}

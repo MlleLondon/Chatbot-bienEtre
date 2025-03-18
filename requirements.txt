@@ -1,0 +1,5 @@
+nltk
+flask==2.0.1
+werkzeug==2.0.1
+transformers
+requests==2.26.0
