@@ -4,86 +4,358 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienvenue sur Bien-être AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* Styles du modal */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .welcome-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .welcome-container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        p {
+            color: #34495e;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .chat-button {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a8a4e6 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chat-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
             position: relative;
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
             width: 90%;
-            height: 90%;
-            background: white;
-            border-radius: 10px;
+            max-width: 700px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .chatbase-content {
+            width: 95%;
+            max-width: 900px;
+            height: 85vh;
+            padding: 0;
+            margin: 2% auto;
+            z-index: 1002;
+            border-radius: 20px;
             overflow: hidden;
+        }
+
+        .chatbase-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 20px;
         }
 
         .close-button {
             position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
+            right: 25px;
+            top: 15px;
+            font-size: 28px;
             cursor: pointer;
-            z-index: 10;
+            z-index: 1001;
+            color: #2c3e50;
+            transition: color 0.3s ease;
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
+        .close-button:hover {
+            color: #e74c3c;
+        }
+
+        #chat-container {
+            height: 450px;
+            overflow-y: auto;
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 2px solid #f0f2f5;
+            border-radius: 15px;
+            background-color: #f8f9fa;
+        }
+
+        .message {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a8a4e6 100%);
+            color: white;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background: white;
+            color: #2c3e50;
+            margin-right: auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .input-container {
+            display: flex;
+            gap: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #f0f2f5;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        #user-input:focus {
+            outline: none;
+            border-color: #6c5ce7;
+        }
+
+        #send-button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a8a4e6 100%);
+            color: white;
             border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        #send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+
+        /* Scrollbar personnalisée */
+        #chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #chat-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        #chat-container::-webkit-scrollbar-thumb {
+            background: #6c5ce7;
+            border-radius: 4px;
+        }
+
+        #chat-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a4e6;
+        }
+
+        /* Animation de chargement */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #6c5ce7;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="welcome-container">
         <h1>Bienvenue sur Bien-être AI</h1>
-        <p>Ton assistant IA pour le bien-être mental</p>
-        <button onclick="openChatModal()">Dis-moi sur quoi je peux t'aider</button>
+        <p>Je suis votre compagnon de bien-être personnel, là pour vous accompagner dans votre parcours vers une meilleure santé mentale et émotionnelle. Je peux vous aider à gérer votre stress, améliorer votre sommeil, et répondre à toutes vos questions sur votre bien-être.</p>
+        <button class="chat-button" onclick="openChatModal()">Commencer la conversation</button>
     </div>
 
-    <!-- 🟢 MODAL CHATBASE -->
-    <div id="chat-modal" class="modal">
+    <!-- Modal Chat -->
+    <div id="chatModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeChatModal()">&times;</span>
-            <iframe src="https://www.chatbase.co/chatbot-iframe/U6BHsC1fQmNOXTV91tKYw"></iframe>
+            <div id="chat-container"></div>
+            <div class="input-container">
+                <input type="text" id="user-input" placeholder="Écrivez votre message..." onkeypress="handleKeyPress(event)">
+                <button id="send-button" onclick="sendMessage()">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Chatbase -->
+    <div id="chatbaseModal" class="modal">
+        <div class="modal-content chatbase-content">
+            <span class="close-button" onclick="closeChatbaseModal()">&times;</span>
+            <iframe
+                src="https://www.chatbase.co/chatbot-iframe/U6BHsC1fQmNOXTV91tKYw"
+                frameborder="0"
+            ></iframe>
         </div>
     </div>
 
     <script>
         function openChatModal() {
-            document.getElementById("chat-modal").style.display = "flex";
+            document.getElementById('chatModal').style.display = 'block';
+            document.getElementById('user-input').focus();
         }
 
         function closeChatModal() {
-            document.getElementById("chat-modal").style.display = "none";
+            document.getElementById('chatModal').style.display = 'none';
         }
 
-        $(document).ready(function(){
-            $('.carousel').slick({
-                infinite: true,
-                slidesToShow: 3,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 3000,
-                arrows: true
-            });
-        });
+        function openChatbaseModal() {
+            document.getElementById('chatbaseModal').style.display = 'block';
+        }
+
+        function closeChatbaseModal() {
+            document.getElementById('chatbaseModal').style.display = 'none';
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function addMessage(message, isUser) {
+            const chatContainer = document.getElementById('chat-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.textContent = message;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function showChatbase() {
+            openChatbaseModal();
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('user-input');
+            const message = input.value.trim();
+            
+            if (message) {
+                addMessage(message, true);
+                input.value = '';
+
+                try {
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ message: message })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+                    
+                    if (data.redirect_to_chatbase) {
+                        addMessage("Je ne peux pas répondre à votre question. Je vais vous rediriger vers notre assistant IA plus avancé.", false);
+                        setTimeout(showChatbase, 2000);
+                    } else {
+                        addMessage(data.response, false);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    addMessage("Désolé, une erreur s'est produite. Je vais vous rediriger vers notre assistant IA plus avancé.", false);
+                    setTimeout(showChatbase, 2000);
+                }
+            }
+        }
+
+        // Fermer les modals si on clique en dehors
+        window.onclick = function(event) {
+            const chatModal = document.getElementById('chatModal');
+            const chatbaseModal = document.getElementById('chatbaseModal');
+            if (event.target == chatModal) {
+                closeChatModal();
+            }
+            if (event.target == chatbaseModal) {
+                closeChatbaseModal();
+            }
+        }
     </script>
 </body>
 </html>

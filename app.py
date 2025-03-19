@@ -16,9 +16,23 @@ def chat():
 # Route pour recevoir les messages du chat (via POST)
 @app.route("/chat", methods=["POST"])
 def chat_message():
-    user_message = request.json.get("message")  # Récupérer le message de l'utilisateur envoyé depuis le frontend
-    response = process_message(user_message)  # Appel à la fonction qui génère la réponse
-    return jsonify({"response": response})  # Retourner la réponse au format JSON
+    data = request.get_json()
+    user_message = data.get('message', '')
+    
+    # Traiter le message avec notre système de mots-clés
+    response = process_message(user_message)
+    
+    # Si aucune réponse n'est trouvée ou si c'est une réponse d'erreur, rediriger vers Chatbase
+    if response is None or "Je ne peux pas répondre" in response:
+        return jsonify({
+            'redirect_to_chatbase': True,
+            'response': "Je ne peux pas répondre à votre question. Je vais vous rediriger vers notre assistant IA plus avancé."
+        })
+    
+    return jsonify({
+        'redirect_to_chatbase': False,
+        'response': response
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)
